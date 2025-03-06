@@ -17,6 +17,7 @@ import { KVUserManager } from './main/contexts/KVUserManager';
 
 import strings from './main/localizations/screen';
 import { SCREEN_NAME } from './main/constants/app-constants';
+import RegisterScreen from './main/screens/RegisterScreen';
 
 import LoginScreen from './main/screens/LoginScreen';
 import SplashScreen from './main/screens/SplashScreen';
@@ -46,27 +47,34 @@ function App(): React.JSX.Element {
 
   return (
     <KVUserContext.Provider value={userManager}>
-
-        <NavigationContainer>
-          <Stack.Navigator
-                initialRouteName={initialRouteName}>
-
-                <Stack.Screen name={SCREEN_NAME.SPLASH}
-                  component={SplashScreen}
-                  options={{
-                    headerShown: false
-                  }} />
-
-                <Stack.Screen name={SCREEN_NAME.LOGIN}
-                  component={LoginScreen}
-                  options={{
-                    headerShown: false
-                  }} />  
-          </Stack.Navigator>
-
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName={initialRouteName}>
+          <Stack.Screen 
+          name={SCREEN_NAME.SPLASH}
+          component={SplashScreen}
+          options={{
+            headerShown: false
+            }} 
+          />
           
-        </NavigationContainer>
-      
+          <Stack.Screen 
+          name={SCREEN_NAME.LOGIN}
+          component={LoginScreen}
+          options={{
+            headerShown: false
+            }} 
+          />
+
+          <Stack.Screen
+          name={SCREEN_NAME.REGISTER}
+          component={RegisterScreen}
+          options={{
+            headerShown: true,
+          }}
+          />
+
+        </Stack.Navigator>
+      </NavigationContainer>
     </KVUserContext.Provider>
   );
 }
