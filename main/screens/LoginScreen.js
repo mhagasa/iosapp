@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import {
   Image,
@@ -9,8 +9,12 @@ import {
   TextInput,
   ToastAndroid,
   BackHandler,
-  ScrollView
+  ScrollView,
+  Platform,
 } from 'react-native';
+
+import Toast from 'react-native-toast-message';
+
 import User from '../models/User';
 import {
   LANGUAGE_CODE,
@@ -19,17 +23,17 @@ import {
 } from '../constants/app-constants';
 import KVButton from '../components/KVButton';
 import KVUserContext from '../contexts/KVUserContext';
-import {KVMainView} from '../components/KVMainView';
+import { KVMainView } from '../components/KVMainView';
 import {
   CONTAINER_COLOR,
   DIMENSIONS,
   FONT_CONSTANTS,
 } from '../constants/theme-constants';
-import strings, {changeLanguage} from '../localizations/screen';
+import strings, { changeLanguage } from '../localizations/screen';
 import KVPasswordInput from '../components/KVPasswordInput';
-// import KVLanguageSwitchButton from '../components/KVLanaugageSwitchButton';
+import KVLanguageSwitchButton from '../components/KVLanaugageSwitchButton';
 
-const LoginScreen = ({navigation}) => {
+const LoginScreen = ({ navigation }) => {
   const [user, setUser] = useState(new User());
   const [indicator, setIndicator] = useState(false);
   const userContext = useContext(KVUserContext);
@@ -38,19 +42,19 @@ const LoginScreen = ({navigation}) => {
   // handles back button press event
   useFocusEffect(
     React.useCallback(() => {
-    const backAction = () => {
-      BackHandler.exitApp();
-      return true;
-    };
+      const backAction = () => {
+        BackHandler.exitApp();
+        return true;
+      };
 
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction,
-    );
+      const backHandler = BackHandler.addEventListener(
+        'hardwareBackPress',
+        backAction,
+      );
 
-    return () => backHandler.remove();
-  }, [])
-);
+      return () => backHandler.remove();
+    }, []),
+  );
 
   const updateState = (key, value) => {
     setUser(oldState => ({
@@ -65,6 +69,7 @@ const LoginScreen = ({navigation}) => {
   const loginHandler = async () => {
     setIndicator(true);
     let response = await userContext.login(user);
+    setIndicator(false);
     if (response && response.status === RESPONSE_STATUS.SUCCESS) {
       if (
         response &&
@@ -83,14 +88,26 @@ const LoginScreen = ({navigation}) => {
         }
       }
     } else {
-      setIndicator(false);
-      ToastAndroid.showWithGravity(
-        response.errorMessage,
-        ToastAndroid.SHORT,
-        ToastAndroid.TOP,
-      );
+      console.log(response.errorMessage);
+
+      if (Platform.OS === 'android') {
+        ToastAndroid.showWithGravity(
+          response.errorMessage,
+          ToastAndroid.SHORT,
+          ToastAndroid.TOP,
+        );
+      } else if (Platform.OS === 'ios') {
+        Toast.show({
+          type: 'error',
+          position: 'top',
+          text1: response.errorMessage,
+        });
+      } else {
+        console.log('Platform not recognized');
+      }
     }
   };
+
   const toggleLanguage = async () => {
     const newLanguage = isEnglish
       ? LANGUAGE_CODE.NEPALI
@@ -100,74 +117,79 @@ const LoginScreen = ({navigation}) => {
   };
 
   return (
-    <View style={styles.mainContainer}>
-      {/*<View style={styles.toggleContainer}> */}
-      {/* Language Switch Button Outside of KVMainView */}
-      {/*<KVLanguageSwitchButton
-        isEnglish={isEnglish}
-        toggleLanguage={toggleLanguage}
-      />
-     </View>*/}
-      <KVMainView indicator={indicator}>
-        <View style={styles.card}>
-          <Image
-            source={require('../assets/img/ic_launcher_round.png')}
-            style={styles.image}
+    <>
+      <View style={styles.mainContainer}>
+        <View style={styles.toggleContainer}>
+          {/* Language Switch Button Outside of KVMainView */}
+          <KVLanguageSwitchButton
+            isEnglish={isEnglish}
+            toggleLanguage={toggleLanguage}
           />
-          <View style={styles.form}>
-            <ScrollView>
-            <View style={styles.inputs}>
-              <TextInput
-                style={styles.input}
-                keyboardType="number-pad"
-                placeholder={strings.mobile}
-                autoCapitalize="none"
-                onChangeText={item => updateState('mobile', item)}
-                maxLength={10}
-                value={user.mobile}></TextInput>
-              <View>
-                <KVPasswordInput
-                  placeholder={strings.password}
-                  onValueChange={value => {
-                    updateState('password', value);
-                  }}
-                />
-              </View>
-              <KVButton value={strings.login} onPressHandler={loginHandler} />
-              <Text>{strings.newUser}:</Text>
-              <KVButton
-                value={strings.register}
-                onPressHandler={() => navigation.navigate(SCREEN_NAME.REGISTER)}
-              />
-              {/* <TouchableOpacity
-                onPress={() => navigation.navigate(SCREEN_NAME.FORGOTPASSWORD)}>
-                <Text style={styles.forgotPasswordText}>
-                  {strings.forgotPassword}
-                </Text>
-              </TouchableOpacity> */}
-            </View>
-            </ScrollView>
-          </View>
         </View>
-      </KVMainView>
-    </View>
+        <KVMainView indicator={indicator}>
+          <View style={styles.card}>
+            <Image
+              source={require('../assets/img/ic_launcher_round.png')}
+              style={styles.image}
+            />
+            <View style={styles.form}>
+              <ScrollView>
+                <View style={styles.inputs}>
+                  <TextInput
+                    style={styles.input}
+                    keyboardType="number-pad"
+                    placeholder={strings.mobile}
+                    autoCapitalize="none"
+                    onChangeText={item => updateState('mobile', item)}
+                    maxLength={10}
+                    value={user.mobile}
+                  />
+                  <View>
+                    <KVPasswordInput
+                      placeholder={strings.password}
+                      onValueChange={value => {
+                        updateState('password', value);
+                      }}
+                    />
+                  </View>
+                  <KVButton value={strings.login} onPressHandler={loginHandler} />
+
+                  <Text>{strings.newUser}:</Text>
+                  <KVButton
+                    value={strings.register}
+                    onPressHandler={() => navigation.navigate(SCREEN_NAME.REGISTER)}
+                  />
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate(SCREEN_NAME.FORGOTPASSWORD)}>
+                    <Text style={styles.forgotPasswordText}>
+                      {strings.forgotPassword}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </ScrollView>
+            </View>
+          </View>
+        </KVMainView>
+      </View>
+      <Toast />
+    </>
   );
 };
 
 const styles = StyleSheet.create({
-  mainContainer:{
+  mainContainer: {
     flex: 1,
     height: DIMENSIONS.HEIGHT,
     maxHeight: DIMENSIONS.HEIGHT,
-    backgroundColor:CONTAINER_COLOR.LIGHTGREY
+    backgroundColor: CONTAINER_COLOR.LIGHTGREY,
   },
-  toggleContainer:{
-    marginTop:"5%",
-    height:"3%",
-    backgroundColor:CONTAINER_COLOR.BACKGROUNDCOLOR,
-    marginLeft:'2%',
-    marginBottom: '6%',
-    borderColor:CONTAINER_COLOR.BACKGROUNDCOLOR
+  toggleContainer: {
+    marginTop: Platform.OS === 'ios' ? '20%' : '5%',
+    height: '3%',
+    backgroundColor: CONTAINER_COLOR.BACKGROUNDCOLOR,
+    marginLeft: '2%',
+    marginBottom: Platform.OS === 'ios' ? '0%' : '6%',
+    borderColor: CONTAINER_COLOR.BACKGROUNDCOLOR,
   },
   image: {
     flex: 1,
@@ -176,7 +198,7 @@ const styles = StyleSheet.create({
     marginTop: '8%',
   },
   card: {
-    position:"relative",
+    position: 'relative',
     flex: 1,
     width: '100%',
     justifyContent: 'center',
@@ -187,7 +209,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignContent: 'center',
     marginTop: DIMENSIONS.HEIGHT / 9,
-    elevation:10
+    elevation: 10,
   },
   heading: {
     fontSize: FONT_CONSTANTS.FONT_SIZE_MEDIUM,
@@ -201,7 +223,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingBottom: '10%',
     width: '100%',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   inputs: {
     width: '90%',
@@ -209,7 +231,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginVertical: '8%',
-    marginBottom:'10%'
+    marginBottom: '10%',
   },
   input: {
     borderBottomWidth: 1,
@@ -219,7 +241,6 @@ const styles = StyleSheet.create({
     minHeight: FONT_CONSTANTS.FONT_SIZE_MEDIUM,
     width: '100%',
     alignItems: 'center',
-
   },
   passwordInput: {
     paddingTop: '10%',

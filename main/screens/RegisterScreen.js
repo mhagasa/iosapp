@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,12 +7,13 @@ import {
   TextInput,
   KeyboardAvoidingView,
   ScrollView,
-  ToastAndroid,
   SafeAreaView,
   BackHandler,
-  Image
+  Image,
+  Platform,
 } from 'react-native';
-import { Picker, PickerIOS } from '@react-native-picker/picker';
+import { Picker } from '@react-native-picker/picker';
+import Toast from 'react-native-toast-message'; // Import Toast
 import User from '../models/User';
 import KVAsyncStorage from '../services/KVAsyncStorage';
 
@@ -28,7 +29,7 @@ import {
   DIMENSIONS,
   FONT_CONSTANTS,
   HEADER_COLOR,
-  INSIDE_CONTAINER_COLOR
+  INSIDE_CONTAINER_COLOR,
 } from '../constants/theme-constants';
 import { KVMainView } from '../components/KVMainView';
 import strings from '../localizations/screen';
@@ -48,15 +49,18 @@ const RegisterScreen = ({ navigation }) => {
   const [message, setMessage] = useState('');
   const [indicator, setIndicator] = useState(false);
   const [retypePassword, setRetypePassword] = useState('');
+
   useEffect(() => {
-      const backHandler = BackHandler.addEventListener(
-        'hardwareBackPress',
-        () => {
-          navigation.pop();
-          return true;
-        },
-      );
-    }, []);
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        navigation.pop();
+        return true;
+      },
+    );
+
+    return () => backHandler.remove(); // Cleanup the event listener
+  }, [navigation]);
 
   const onRegisterIn = async (jsonRes, token) => {
     try {
@@ -67,7 +71,7 @@ const RegisterScreen = ({ navigation }) => {
     }
   };
 
-  const setErrorMessage = msg => {
+  const setErrorMessage = (msg) => {
     setIsError(true);
     setMessage(msg);
   };
@@ -76,13 +80,20 @@ const RegisterScreen = ({ navigation }) => {
     try {
       const validationResult = validateResigter({ registerUser, retypePassword });
       if (!validationResult.isValid) {
-        ToastAndroid.showWithGravity(
-          validationResult.errorMessage,
-          ToastAndroid.SHORT,
-          ToastAndroid.TOP,
-        )
+        console.log(validationResult.errorMessage);
+        // Show toast for validation error
+        Toast.show({
+          type: 'error', // 'success', 'error', or 'info'
+          position: 'top', // 'top', 'bottom', or 'center'
+          text2: validationResult.errorMessage,
+          // text2Style:{
+          //   fontSize: 9
+          // },
+          text2NumberOfLines: 5
+        });
         return;
       }
+
       setIndicator(true);
       let response = await new KVUserManager().register(registerUser);
       if (response && response.status === RESPONSE_STATUS.SUCCESS) {
@@ -91,21 +102,25 @@ const RegisterScreen = ({ navigation }) => {
           registerUser: registerUser,
         });
       } else {
-        ToastAndroid.showWithGravity(
-          response.errorMessage,
-          ToastAndroid.SHORT,
-          ToastAndroid.TOP,
-        );
+        // Show toast for API error
+        Toast.show({
+          type: 'error',
+          position: 'top',
+          text1: 'Error',
+          text2: response.errorMessage,
+        });
       }
 
       setIndicator(false);
     } catch (err) {
       setIndicator(false);
-      ToastAndroid.showWithGravity(
-        errorMessage,
-        ToastAndroid.SHORT,
-        ToastAndroid.TOP,
-      );
+      // Show toast for unexpected error
+      Toast.show({
+        type: 'error',
+        position: 'top',
+        text1: 'Error',
+        text2: err.message || 'Something went wrong!',
+      });
     }
   };
 
@@ -114,7 +129,7 @@ const RegisterScreen = ({ navigation }) => {
   };
 
   const updateState = (key, value) => {
-    setRegisterUser(oldState => ({
+    setRegisterUser((oldState) => ({
       ...oldState,
       [key]: value,
     }));
@@ -125,38 +140,41 @@ const RegisterScreen = ({ navigation }) => {
       <KVMainView indicator={indicator}>
         <View style={styles.card}>
           <Image
-          source={require('../assets/img/ic_launcher_round.png')}
-          style={styles.image}/>
+            source={require('../assets/img/ic_launcher_round.png')}
+            style={styles.image}
+          />
           <Text style={styles.heading}>{strings.signUp}</Text>
           <View style={styles.form}>
-
             <ScrollView>
               <View style={styles.inputs}>
                 <TextInput
                   style={styles.input}
                   placeholder={strings.fullName}
-                  onChangeText={item => updateState('name',item)}
-                  value={registerUser.name}></TextInput>
+                  onChangeText={(item) => updateState('name', item)}
+                  value={registerUser.name}
+                />
                 <TextInput
                   style={styles.input}
                   placeholder={strings.mobile}
-                  onChangeText={item => updateState('mobile', translateNepaliNumber(item))}
+                  onChangeText={(item) =>
+                    updateState('mobile', translateNepaliNumber(item))
+                  }
                   value={registerUser.mobile}
                   keyboardType="number-pad"
-                  maxLength={10}></TextInput>
+                  maxLength={10}
+                />
                 <View style={styles.inputUsertypelabel}>
                   <Text style={styles.inputUsertype}>{strings.userType}:</Text>
                   <Picker
                     style={styles.inputUsertypePicker}
                     selectedValue={registerUser.userType}
-                    onValueChange={value => {
+                    onValueChange={(value) => {
                       updateState('userType', value);
-                    }}>
+                    }}
+                  >
                     <Picker.Item
                       label={strings.landlord}
                       value={USER_TYPE_LANDLORD}
-                        style={{ fontSize:5}}
-                      
                     />
                     <Picker.Item
                       label={strings.tenant}
@@ -166,13 +184,13 @@ const RegisterScreen = ({ navigation }) => {
                 </View>
                 <KVPasswordInput
                   placeholder={strings.password}
-                  onValueChange={value => {
+                  onValueChange={(value) => {
                     updateState('password', value);
                   }}
                 />
                 <KVPasswordInput
                   placeholder={strings.retypePassword}
-                  onValueChange={value => {
+                  onValueChange={(value) => {
                     setRetypePassword(value);
                   }}
                 />
@@ -192,6 +210,8 @@ const RegisterScreen = ({ navigation }) => {
           </View>
         </View>
       </KVMainView>
+      {/* Render Toast at the root level */}
+      <Toast />
     </SafeAreaView>
   );
 };
@@ -201,16 +221,16 @@ const styles = StyleSheet.create({
     flex: 1,
     height: DIMENSIONS.HEIGHT,
     maxHeight: DIMENSIONS.HEIGHT,
-    backgroundColor:CONTAINER_COLOR.LIGHTGREY
+    backgroundColor: CONTAINER_COLOR.LIGHTGREY,
   },
   image: {
-    height:DIMENSIONS.HEIGHT / 8,
-    width:DIMENSIONS.WIDTH / 3.70,
+    height: DIMENSIONS.HEIGHT / 8,
+    width: DIMENSIONS.WIDTH / 3.7,
     flex: 1,
     alignSelf: 'center',
     justifyContent: 'center',
     marginTop: '4%',
-    marginBottom: '0.5%'
+    marginBottom: '0.5%',
   },
   card: {
     flex: 1,
@@ -226,7 +246,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 6, height: 6 },
     shadowOpacity: 7,
     shadowRadius: 3,
-    elevation:10
+    elevation: 10,
   },
   heading: {
     fontSize: FONT_CONSTANTS.FONT_SIZE_MEDIUM + 10,
@@ -240,7 +260,7 @@ const styles = StyleSheet.create({
     paddingBottom: '10%',
     width: '85%',
     elevation: 8,
-    marginBottom:"-3%" 
+    marginBottom: '-3%',
   },
   inputs: {
     width: '100%',
@@ -249,8 +269,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: DIMENSIONS.HEIGHT / 70,
     marginBottom: DIMENSIONS.HEIGHT / 45,
-    elevation:10,
-    marginBottom:"3%" 
+    elevation: 10,
+    marginBottom: '3%',
   },
   input: {
     width: '100%',
@@ -259,37 +279,31 @@ const styles = StyleSheet.create({
     paddingTop: '5%',
     fontSize: FONT_CONSTANTS.FONT_SIZE_MEDIUM,
     minHeight: 30,
-    marginBottom:DIMENSIONS.HEIGHT /100
+    marginBottom: DIMENSIONS.HEIGHT / 100,
   },
   inputUsertypelabel: {
     width: '100%',
-    height:'55%',
+    height: '55%',
     paddingTop: '4%',
     marginBottom: '2.5%',
-    fontSize: FONT_CONSTANTS.FONT_SIZE_MEDIUM+ 10,
-    minHeight: FONT_CONSTANTS.FONT_SIZE_MEDIUM + 10 ,
+    fontSize: FONT_CONSTANTS.FONT_SIZE_MEDIUM + 10,
+    minHeight: FONT_CONSTANTS.FONT_SIZE_MEDIUM + 10,
     flex: 1,
     flexDirection: 'row',
   },
   inputUsertype: {
     flex: 1,
-    marginBottom:'1%',
+    marginBottom: '1%',
     marginTop: '10%',
     width: DIMENSIONS.WIDTH,
-    height: FONT_CONSTANTS.FONT_SIZE_MEDIUM + 10
+    height: FONT_CONSTANTS.FONT_SIZE_MEDIUM + 10,
   },
   inputUsertypePicker: {
-    height: '100%', 
-    width: '70%', 
+    height: '100%',
+    width: '70%',
     backgroundColor: INSIDE_CONTAINER_COLOR.BACKGROUNDCOLOR,
-    marginTop:'-25%',
-    marginBottom:'-20%'
-  },
-  inputText: {
-    width: '80%',
-    paddingTop: '10%',
-    fontSize: FONT_CONSTANTS.FONT_SIZE_MEDIUM,
-    minHeight: "10%",
+    marginTop: '-25%',
+    marginBottom: '-20%',
   },
   button: {
     width: '100%',
@@ -304,15 +318,15 @@ const styles = StyleSheet.create({
     color: BUTTON_STYLE.TEXT_COLOR,
     fontSize: FONT_CONSTANTS.FONT_SIZE_MEDIUM,
   },
-  haveAccount:{
-    flexDirection: 'row', // Ensures the text is in the same row
+  haveAccount: {
+    flexDirection: 'row',
     marginTop: '5%',
-    marginLeft: '25%'
+    marginLeft: '25%',
   },
-  haveAccountLogin:{
-    flexDirection: 'row', // Ensures the text is in the same row
-    color:'#007BFF',
-  }
+  haveAccountLogin: {
+    flexDirection: 'row',
+    color: '#007BFF',
+  },
 });
 
 export default RegisterScreen;

@@ -12,15 +12,21 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import KVUserContext from './main/contexts/KVUserContext';
-
 import { KVUserManager } from './main/contexts/KVUserManager';
 
 import strings from './main/localizations/screen';
-import { SCREEN_NAME } from './main/constants/app-constants';
-import RegisterScreen from './main/screens/RegisterScreen';
 
+import HeaderRight from './main/components/HeaderRight';
+
+import { SCREEN_NAME } from './main/constants/app-constants';
+import { HEADER_COLOR } from './main/constants/theme-constants';
+
+import RegisterScreen from './main/screens/RegisterScreen';
 import LoginScreen from './main/screens/LoginScreen';
+import ForgotPasswordScreen from './main/screens/ForgotPasswordScreen';
 import SplashScreen from './main/screens/SplashScreen';
+import SendRegisterOtpScreen from './main/screens/SendRegisterOtpScreen';
+import TabNavigator from './main/screens/TabNavigator';
 
 const Stack = createStackNavigator();
 
@@ -71,6 +77,33 @@ function App(): React.JSX.Element {
           options={{
             headerShown: true,
           }}
+          />
+
+          <Stack.Screen 
+          name={SCREEN_NAME.FORGOTPASSWORD}
+          component={ForgotPasswordScreen}
+          options={{
+            headerShown: true
+          }} 
+          />
+
+          <Stack.Screen 
+          name={SCREEN_NAME.SENDREGISTEROTP}
+          component={SendRegisterOtpScreen}
+          options={{
+            title: strings.sendOtp,
+            headerStyle: {backgroundColor: HEADER_COLOR.TITLE},
+            headerLeft: () => null,
+          }}
+          />
+          
+          <Stack.Screen 
+          name={SCREEN_NAME.TABNAVIGATOR}
+          component={TabNavigator}
+          options={{
+            headerShown: false,
+            headerRight: () => <HeaderRight />
+          }} 
           />
 
         </Stack.Navigator>
