@@ -28,8 +28,15 @@ import SplashScreen from './main/screens/SplashScreen';
 import SendRegisterOtpScreen from './main/screens/SendRegisterOtpScreen';
 import TabNavigator from './main/screens/TabNavigator';
 
+import KVRoomContext from './main/contexts/KVRoomContext';
+import KVTenantContext from './main/contexts/KVTenantContext';
+import { KVRoomManager } from './main/contexts/KVRoomManager';
+import { KVTenantManager } from './main/contexts/KVTenantManager';
+
 const Stack = createStackNavigator();
 
+const roomManager = new KVRoomManager();
+const tenantManager = new KVTenantManager();
 const userManager = new KVUserManager();
 
 function App(): React.JSX.Element {
@@ -52,6 +59,8 @@ function App(): React.JSX.Element {
   }, []);
 
   return (
+    <KVRoomContext.Provider value={roomManager}>
+      <KVTenantContext.Provider value={tenantManager}>
     <KVUserContext.Provider value={userManager}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName={initialRouteName}>
@@ -109,6 +118,8 @@ function App(): React.JSX.Element {
         </Stack.Navigator>
       </NavigationContainer>
     </KVUserContext.Provider>
+    </KVTenantContext.Provider>
+    </KVRoomContext.Provider>
   );
 }
 

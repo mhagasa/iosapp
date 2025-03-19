@@ -1,18 +1,18 @@
-//import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ASYNCSTORAGE_KEYS} from '../constants/asyncStorage-constants';
 export default class KVAsyncStorage {
   /*
    * method to store user and token
    */
   async storeUserAndToken(userData, token) {
-    /*await AsyncStorage.setItem(
+    await AsyncStorage.setItem(
       ASYNCSTORAGE_KEYS.KEY_USER,
       JSON.stringify(userData) || '',
     );
     await AsyncStorage.setItem(
       ASYNCSTORAGE_KEYS.KEY_TOKEN,
       JSON.stringify(token) || '',
-    ); */
+    );
     return true;
   }
 
@@ -36,7 +36,7 @@ export default class KVAsyncStorage {
    * method to return token
    */
   async getToken() {
-    //return await AsyncStorage.getItem(ASYNCSTORAGE_KEYS.KEY_TOKEN);
+    return await AsyncStorage.getItem(ASYNCSTORAGE_KEYS.KEY_TOKEN);
   }
 
   async getItems(key) {

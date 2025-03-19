@@ -5,12 +5,13 @@ import {
   StyleSheet,
   Button,
   TextInput,
-  Alert
+  Alert,
+  Platform
 } from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import {Room} from '../models/Room';
 import KVRoomContext from '../contexts/KVRoomContext';
-// import UpdateTenantDetailScreen from './UpdateTenantDetailScreen';
+import UpdateTenantDetailScreen from './UpdateTenantDetailScreen';
 import {
   BUTTON_COLOR,
   DIMENSIONS,
@@ -177,14 +178,14 @@ export default function AddRoomDetailScreen(props) {
 
   return (
     <View style={{flex: 1}}>
-        {/* {showTenantDetail ? (
+        {showTenantDetail ? (
           <UpdateTenantDetailScreen
             selectedRoom={room}
             onCancelClicked={() => {
               setRoom(roomContext.getDetails(room._id));
               setShowTenantDetail(false);
             }}></UpdateTenantDetailScreen>
-        ) : ( */}
+        ) : (
           <KVMainView indicator={indicator}>
             <View style={styles.container}>
               {editableMode ? (
@@ -291,8 +292,8 @@ export default function AddRoomDetailScreen(props) {
              
               </View>
           </KVMainView>
-        {/* )} */}
-    
+        )}
+    <Toast/>
     </View>
     
   );
@@ -304,7 +305,7 @@ export default function AddRoomDetailScreen(props) {
 const styles = StyleSheet.create({
   container: {
     position:"relative",
-    marginTop:"2%",
+    marginTop: Platform.OS === 'ios' ? "25%" : "2%",
     borderWidth: 1,
     borderRadius: 5,
     padding: '5%',

@@ -1,9 +1,9 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {View, StyleSheet, BackHandler, ToastAndroid, Alert} from 'react-native';
+import {View, StyleSheet, BackHandler, Alert} from 'react-native';
 import Modal from 'react-native-modal';
 
 import FloatingAdd from '../components/FloatingAdd';
-// import KVRoomListView from '../components/KVRoomListView';
+import KVRoomListView from '../components/KVRoomListView';
 import {RESPONSE_STATUS} from '../constants/app-constants';
 import {CONTAINER_COLOR, FONT_CONSTANTS,HEADER_COLOR,BUTTON_COLOR} from '../constants/theme-constants';
 import KVRoomContext from '../contexts/KVRoomContext';
@@ -12,8 +12,9 @@ import {useIsMounted} from '../hooks/useIsMounted';
 import strings from '../localizations/screen';
 import {Room} from '../models/Room';
 import AddRoomDetailScreen from './AddRoomDetailScreen';
-// import UpdateTenantDetailScreen from './UpdateTenantDetailScreen';
+import UpdateTenantDetailScreen from './UpdateTenantDetailScreen';
 import {SearchBar} from 'react-native-elements';
+import Toast from 'react-native-toast-message'; // Import Toast
 
 const PRIMARY_KEY = Room.PRIMARY_KEY;
 
@@ -54,11 +55,11 @@ export default function RoomDetailScreen() {
       })
       .catch(error => {
         setHasError(true);
-        ToastAndroid.showWithGravity(
-          error.message ? error.message : JSON.stringify(error),
-          ToastAndroid.SHORT,
-          ToastAndroid.TOP,
-        );
+        Toast.show({
+          type: 'error', // 'success', 'error', or 'info'
+          position: 'top', // 'top', 'bottom', or 'center'
+          text2: error.message ? error.message : JSON.stringify(error)
+        });
       });
   }, []);
 
@@ -83,8 +84,11 @@ export default function RoomDetailScreen() {
 
       if (exitApp === 0) {
         setExitApp(exitApp + 1);
-
-        ToastAndroid.show(strings.tapAgainToExit, ToastAndroid.SHORT);
+        Toast.show({
+          type: 'info', // 'success', 'error', or 'info'
+          position: 'top', // 'top', 'bottom', or 'center'
+          text2: strings.tapAgainToExit
+        });
       } else if (exitApp === 1) {
         BackHandler.exitApp();
       }
@@ -118,7 +122,11 @@ export default function RoomDetailScreen() {
     }
     setIsLoadingData(false);
     //display error
-    ToastAndroid.showWithGravity(message, ToastAndroid.SHORT, ToastAndroid.TOP);
+    Toast.show({
+      type: 'error', // 'success', 'error', or 'info'
+      position: 'top', // 'top', 'bottom', or 'center'
+      text2: message
+    });
   };
 
   const handleItemClicked = room => {
@@ -227,13 +235,13 @@ export default function RoomDetailScreen() {
           onCancelClicked={handleAdd}
         />
       </Modal>
-      {/* <Modal isVisible={isTenantDetailVisible}>
+      <Modal isVisible={isTenantDetailVisible}>
         <UpdateTenantDetailScreen
           selectedRoom={selectedRoom}
           addMode={addNewTenant}
           onCancelClicked={handleUpdateTenantClicked}
         />
-      </Modal> */}
+      </Modal>
       <Modal isVisible={isViewDetailVisible}>
         <AddRoomDetailScreen
           editMode={false}
@@ -241,7 +249,7 @@ export default function RoomDetailScreen() {
           onCancelClicked={handleItemClicked}
         />
       </Modal>
-      {/* <View style={styles.insideContainer}>
+      <View style={styles.insideContainer}>
         <KVRoomListView
           dataSource={filteredRooms}
           primaryKey={PRIMARY_KEY}
@@ -253,7 +261,7 @@ export default function RoomDetailScreen() {
           onDeleteTenantClicked={item => handleDeleteTenantClicked(item)}
           emptyLabel={strings.noRoomsAvailable}
         />
-      </View> */}
+      </View>
 
       <FloatingAdd onClickHandler={handleAdd} />
     </View>
