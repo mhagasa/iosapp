@@ -85,11 +85,7 @@ const RegisterScreen = ({ navigation }) => {
         Toast.show({
           type: 'error', // 'success', 'error', or 'info'
           position: 'top', // 'top', 'bottom', or 'center'
-          text2: validationResult.errorMessage,
-          // text2Style:{
-          //   fontSize: 9
-          // },
-          text2NumberOfLines: 5
+          text2: validationResult.errorMessage
         });
         return;
       }

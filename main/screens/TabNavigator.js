@@ -5,7 +5,7 @@ import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 
 import {FONT_CONSTANTS, HEADER_COLOR} from '../constants/theme-constants';
 
-// import RoomDetailScreen from './RoomDetailScreen';
+import RoomDetailScreen from './RoomDetailScreen';
 // import RentDetailScreen from './RentDetailScreen';
 import testScreen from './testScreen';
 
@@ -19,27 +19,27 @@ const Tab = createBottomTabNavigator();
 export default function TabNavigator() {
   return (
     <Tab.Navigator
-      // initialRouteName={SCREEN_NAME.ROOMDETAIL}
-      // screenOptions={({route}) => ({
-      //   tabBarIcon: ({focused, color, size}) => {
-      //     let iconName;
-      //     let rn = route.name;
+      initialRouteName={SCREEN_NAME.ROOMDETAIL}
+      screenOptions={({route}) => ({
+        tabBarIcon: ({focused, color, size}) => {
+          let iconName;
+          let rn = route.name;
 
-      //     if (rn === SCREEN_NAME.ROOMDETAIL) {
-      //       iconName = focused ? 'home' : 'home-outline';
-      //     } else if (rn === SCREEN_NAME.RENTDETAIL) {
-      //       iconName = focused ? 'list' : 'list-outline';
-      //     } else if (rn === SCREEN_NAME.TENATNDETAIL) {
-      //       iconName = focused ? 'people' : 'people-outline';
-      //     }
-      //     return <Ionicons name={iconName} size={25} color={color} />;
-      //   },
-      //   headerRight: () => <HeaderRight />,
-      //   headerBackVisible: false,
-      //   tabBarHideOnKeyboard: true, 
-      // })}
+          if (rn === SCREEN_NAME.ROOMDETAIL) {
+            iconName = focused ? 'home' : 'home-outline';
+          } else if (rn === SCREEN_NAME.RENTDETAIL) {
+            iconName = focused ? 'list' : 'list-outline';
+          } else if (rn === SCREEN_NAME.TENATNDETAIL) {
+            iconName = focused ? 'people' : 'people-outline';
+          }
+          return <Ionicons name={iconName} size={25} color={color} />;
+        },
+        headerRight: () => <HeaderRight />,
+        headerBackVisible: false,
+        tabBarHideOnKeyboard: true, 
+      })}
       >
-      {/* <Tab.Screen
+      <Tab.Screen
         name={SCREEN_NAME.ROOMDETAIL}
         component={RoomDetailScreen}
         options={{
@@ -66,7 +66,7 @@ export default function TabNavigator() {
           },
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name={SCREEN_NAME.RENTDETAIL}
         component={RentDetailScreen}
         options={{
@@ -92,7 +92,7 @@ export default function TabNavigator() {
           },
         }}
       /> */}
-      <Tab.Screen name={'testScreen'} component={testScreen}></Tab.Screen>
+      {/* <Tab.Screen name={'testScreen'} component={testScreen}></Tab.Screen> */}
     </Tab.Navigator>
   );
 }

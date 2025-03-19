@@ -4,6 +4,7 @@ import strings from '../localizations/screen';
 //const API_URL = 'http://10.0.2.2:3000/';
 // const API_URL = 'http://localhost:3000/';
 const API_URL = 'https://kothavada-backend.onrender.com/';
+//const API_URL = 'https://penguin-uncommon-marmot.ngrok-free.app/';
 const API_URL_USER = API_URL + 'api/users';
 const API_URL_ROOM = API_URL + 'api/rooms';
 const API_URL_TENANT = API_URL + 'api/tenants';
