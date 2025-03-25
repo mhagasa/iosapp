@@ -1,0 +1,23 @@
+[
+    {
+        "_id":"tenant12",
+        "tenantName": "RamKumar",
+        "roomId": "room1",
+        "roomName": "Room 101",
+        "totalAdults": "1",
+        "totalChildren": "1",
+        "address":"samakhusi",
+        "tenantPhone":"9841862113",
+        "startDate":"2022-11-11"
+    },{
+        "_id":"tenant3",
+        "tenantName": "Hari Kumar",
+        "roomId": "room2",
+        "roomName": "Room 102",
+        "totalAdults": "2",
+        "totalChildren": "0",
+        "address":"samakhusi",
+        "tenantPhone":"9841862113",
+        "startDate":"2022-01-11"
+    }
+]

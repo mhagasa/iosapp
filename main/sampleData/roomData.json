@@ -1,0 +1,36 @@
+[
+    {
+        "_id":"room1",
+        "roomName": "Room 101",
+        "type": "Room",
+        "price": "8000",
+        "floor": "1st Floor",
+        "garbageCharge": "200",
+        "electricityPerUnit": "10"
+    },{
+        "_id":"room2",
+        "roomName": "Room 102",
+        "type": "Room",
+        "price": "5000",
+        "garbageCharge": "200",
+        "electricityPerUnit": "10",
+
+        "floor": "1st Floor"
+    },{
+        "_id":"room3",
+        "roomName": "Room 103",
+        "type": "Room",
+        "price": "11000",
+        "garbageCharge": "100",
+        "electricityPerUnit": "10",
+        "floor": "1st Floor"
+    },{
+        "_id":"room4",
+        "roomName": "Kotha 1",
+        "type": "Room",
+        "price": "6000",
+        "garbageCharge": "150",
+        "electricityPerUnit": "10",
+        "floor": "1st Floor"
+    }
+]

@@ -13,6 +13,7 @@ import {
   Platform,
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
+import { Dropdown } from 'react-native-element-dropdown';
 import Toast from 'react-native-toast-message'; // Import Toast
 import User from '../models/User';
 import KVAsyncStorage from '../services/KVAsyncStorage';
@@ -49,6 +50,12 @@ const RegisterScreen = ({ navigation }) => {
   const [message, setMessage] = useState('');
   const [indicator, setIndicator] = useState(false);
   const [retypePassword, setRetypePassword] = useState('');
+
+  // Dropdown data for user types
+  const userTypes = [
+    { label: strings.landlord, value: USER_TYPE_LANDLORD },
+    { label: strings.tenant, value: USER_TYPE_TENANT }
+  ];
 
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
@@ -160,6 +167,22 @@ const RegisterScreen = ({ navigation }) => {
                   maxLength={10}
                 />
                 <View style={styles.inputUsertypelabel}>
+                <Text style={styles.text}>{strings.userType}:</Text>
+                <Dropdown
+                  style={styles.dropdown}
+                  placeholderStyle={styles.placeholderStyle}
+                  selectedTextStyle={styles.selectedTextStyle}
+                  inputSearchStyle={styles.inputSearchStyle}
+                  iconStyle={styles.iconStyle}
+                  data={userTypes}
+                  labelField="label"
+                  valueField="value"
+                  placeholder="Select type"
+                  value={registerUser.userType}
+                  onChange={item => updateState('userType', item.value)}
+                />
+              
+                {/* <TextInput style={styles.input} editable={false} value={registerUser.userType}/>
                   <Text style={styles.inputUsertype}>{strings.userType}:</Text>
                   <Picker
                     style={styles.inputUsertypePicker}
@@ -176,7 +199,7 @@ const RegisterScreen = ({ navigation }) => {
                       label={strings.tenant}
                       value={USER_TYPE_TENANT}
                     />
-                  </Picker>
+                  </Picker> */}
                 </View>
                 <KVPasswordInput
                   placeholder={strings.password}
@@ -277,10 +300,20 @@ const styles = StyleSheet.create({
     minHeight: 30,
     marginBottom: DIMENSIONS.HEIGHT / 100,
   },
+  dropdown: {
+    width: '70%',
+    height: '100%',
+    borderColor: 'black',
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 8,
+    marginBottom: 10,
+    marginLeft:10
+  },
   inputUsertypelabel: {
     width: '100%',
     height: '55%',
-    paddingTop: '4%',
+    paddingTop: '5%',
     marginBottom: '2.5%',
     fontSize: FONT_CONSTANTS.FONT_SIZE_MEDIUM + 10,
     minHeight: FONT_CONSTANTS.FONT_SIZE_MEDIUM + 10,

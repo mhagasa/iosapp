@@ -6,8 +6,8 @@ import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import {FONT_CONSTANTS, HEADER_COLOR} from '../constants/theme-constants';
 
 import RoomDetailScreen from './RoomDetailScreen';
-// import RentDetailScreen from './RentDetailScreen';
-import testScreen from './testScreen';
+import RentDetailScreen from './RentDetailScreen';
+// import testScreen from './testScreen';
 
 import {SCREEN_NAME, LABEL} from '../constants/app-constants';
 import HeaderRight from '../components/HeaderRight';
@@ -57,7 +57,7 @@ export default function TabNavigator() {
           tabBarStyle: {
             position: 'absolute',
             backgroundColor: '#fff',
-            height: '7.3%',
+            height: '10%',
             ...styles.shadow,
           },
           tabBarLabelStyle: {
@@ -66,7 +66,7 @@ export default function TabNavigator() {
           },
         }}
       />
-      {/* <Tab.Screen
+      <Tab.Screen
         name={SCREEN_NAME.RENTDETAIL}
         component={RentDetailScreen}
         options={{
@@ -83,7 +83,7 @@ export default function TabNavigator() {
           tabBarStyle: {
             position: 'absolute',
             backgroundColor: '#ffffff',
-            height: '6.3%',
+            height: '10%',
             elevation: 5
           },
           tabBarLabelStyle: {
@@ -91,7 +91,7 @@ export default function TabNavigator() {
             padding:5
           },
         }}
-      /> */}
+      />
       {/* <Tab.Screen name={'testScreen'} component={testScreen}></Tab.Screen> */}
     </Tab.Navigator>
   );

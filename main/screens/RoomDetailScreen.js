@@ -274,6 +274,7 @@ const styles = StyleSheet.create({
     backgroundColor: CONTAINER_COLOR.BACKGROUNDCOLOR,
     padding: '2%',
     width: '100%',
+    marginBottom: '10%'
   },
   insideContainer: {
     height: '87%',

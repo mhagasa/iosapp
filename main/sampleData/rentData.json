@@ -1,0 +1,19 @@
+[
+    {
+        "_id":"rent1",
+        "tenantId": "tenant1",
+        "tenantName": "Ram Krisha",
+        "roomId": "room1",
+        "roomName": "Room 101",
+        "roomRent":"8000",
+        "electricityUnit":"200",
+        "garbageCharge":"200",
+        "totalRent": "10000",
+        "paidRent": "5000",
+        "pendingRent":"3000",
+        "previousDue":"600",
+        "dateStart":"",
+        "dateEnd":"",
+        "status":"Paid"
+    }
+]

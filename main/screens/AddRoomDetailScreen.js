@@ -8,7 +8,7 @@ import {
   Alert,
   Platform
 } from 'react-native';
-import {Picker} from '@react-native-picker/picker';
+import { Dropdown } from 'react-native-element-dropdown';
 import {Room} from '../models/Room';
 import KVRoomContext from '../contexts/KVRoomContext';
 import UpdateTenantDetailScreen from './UpdateTenantDetailScreen';
@@ -21,8 +21,8 @@ import {RESPONSE_STATUS} from '../constants/app-constants';
 import {KVMainView} from '../components/KVMainView';
 import strings from '../localizations/screen';
 import { translateNepaliNumber } from '../validation/translate';
-
 import Toast from 'react-native-toast-message';
+
 /*
  * class for Add/Update Room Detail Screen
  */
@@ -32,6 +32,12 @@ export default function AddRoomDetailScreen(props) {
   const [showTenantDetail, setShowTenantDetail] = useState(false);
   const [indicator, setIndicator] = useState(false);
   const roomContext = useContext(KVRoomContext);
+
+  // Dropdown data for room types
+  const roomTypes = [
+    { label: strings.flat, value: 'Flat' },
+    { label: strings.room, value: 'Room' }
+  ];
 
   /*
    * method to update initial value
@@ -210,18 +216,23 @@ export default function AddRoomDetailScreen(props) {
 
               <Text style={styles.text}>{strings.type}:</Text>
               {editableMode ? (
-                <Picker
-                  style={styles.pickerInput}
-                  selectedValue={room.type}
-                  onValueChange={text => updateState('type', text)}>
-                  <Picker.Item label={strings.flat} value="Flat" />
-                  <Picker.Item label={strings.room} value="Room" />
-                </Picker>
+                <Dropdown
+                  style={styles.dropdown}
+                  placeholderStyle={styles.placeholderStyle}
+                  selectedTextStyle={styles.selectedTextStyle}
+                  inputSearchStyle={styles.inputSearchStyle}
+                  iconStyle={styles.iconStyle}
+                  data={roomTypes}
+                  labelField="label"
+                  valueField="value"
+                  placeholder="Select type"
+                  value={room.type}
+                  onChange={item => updateState('type', item.value)}
+                />
               ) : (
                 <TextInput
                   style={styles.input}
-                  editable={editableMode}
-                  selectTextOnFocus={editableMode}
+                  editable={false}
                   value={room.type}
                 />
               )}
@@ -295,7 +306,6 @@ export default function AddRoomDetailScreen(props) {
         )}
     <Toast/>
     </View>
-    
   );
 }
 
@@ -338,15 +348,28 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
   },
-  pickerInput: {
+  dropdown: {
+    height: 50,
+    borderColor: 'black',
     borderWidth: 1,
-    borderBottomColor: 'black',
     borderRadius: 5,
-    padding: '1%',
+    paddingHorizontal: 8,
+    marginBottom: 10,
+  },
+  placeholderStyle: {
     fontSize: FONT_CONSTANTS.FONT_SIZE_MEDIUM,
-    height: FONT_CONSTANTS.FONT_SIZE_MEDIUM + 50,
-    width: '100%',
-    alignItems: 'center',
+    color: 'gray',
+  },
+  selectedTextStyle: {
+    fontSize: FONT_CONSTANTS.FONT_SIZE_MEDIUM,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: FONT_CONSTANTS.FONT_SIZE_MEDIUM,
   },
   button: {
     marginTop: '5%',
