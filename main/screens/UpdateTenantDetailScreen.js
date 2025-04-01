@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Button,
   TextInput,
+  Platform
 } from 'react-native';
 
 import {KVMainView} from '../components/KVMainView';
@@ -255,6 +256,7 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#fff',
     width: '100%',
+    marginTop: Platform.OS === 'ios' ? "25%" : "2%",
   },
   lineStyle: {
     borderWidth: 0.5,

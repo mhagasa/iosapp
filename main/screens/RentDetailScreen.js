@@ -12,7 +12,7 @@ import FloatingAdd from '../components/FloatingAdd';
 // import KVListView from '../components/KVListView';
 import KVRentContext from '../contexts/KVRentContext';
 import {Rent} from '../models/Rent';
-// import AddRentDetailScreen from './AddRentDetailScreen';
+import AddRentDetailScreen from './AddRentDetailScreen';
 // import ViewPaidRentsScreen from './ViewPaidRentsScreen';
 // import PaymentScreen from './PaymentScreen';
 import KVRentListView from '../components/KVRentListView';
@@ -208,7 +208,7 @@ export default function RentDetailScreen({navigation}) {
 
   return (
     <View style={styles.container}>
-      {/* <Modal isVisible={isViewDetailVisible}>
+      <Modal isVisible={isViewDetailVisible}>
         <AddRentDetailScreen
           editMode={false}
           selectedItem={selectedItem}
@@ -221,7 +221,7 @@ export default function RentDetailScreen({navigation}) {
           selectedItem={selectedItem}
           onCancelClicked={handleAdd}
         />
-      </Modal> */}
+      </Modal>
 
       {/* <Modal isVisible={showPaidRents}>
         <ViewPaidRentsScreen

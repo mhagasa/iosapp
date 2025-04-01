@@ -109,6 +109,11 @@ export const LANGUAGE_MAP = {
   ne: strings.nepali,
 };
 
+export const DATE_SYSTEM = {
+  BS: 'BS',
+  AD: 'AD',
+};
+
 // otp constants
 export const OTP = {
   OTP_LENGTH : 6
