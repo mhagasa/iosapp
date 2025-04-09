@@ -13,8 +13,8 @@ import FloatingAdd from '../components/FloatingAdd';
 import KVRentContext from '../contexts/KVRentContext';
 import {Rent} from '../models/Rent';
 import AddRentDetailScreen from './AddRentDetailScreen';
-// import ViewPaidRentsScreen from './ViewPaidRentsScreen';
-// import PaymentScreen from './PaymentScreen';
+import ViewPaidRentsScreen from './ViewPaidRentsScreen';
+import PaymentScreen from './PaymentScreen';
 import KVRentListView from '../components/KVRentListView';
 import {
   BUTTON_COLOR,
@@ -223,18 +223,18 @@ export default function RentDetailScreen({navigation}) {
         />
       </Modal>
 
-      {/* <Modal isVisible={showPaidRents}>
+      <Modal isVisible={showPaidRents}>
         <ViewPaidRentsScreen
           onCancelClicked={() => {
             setShowPaidRents(false);
           }}
         />
-      </Modal> */}
-      {/* <Modal isVisible={showPayment}>
+      </Modal>
+      <Modal isVisible={showPayment}>
         <PaymentScreen
           item={selectedItem}
           onCancelClicked={handlePayCancelClicked}></PaymentScreen>
-      </Modal> */}
+      </Modal>
       <View style={styles.buttonContainer}>
         <Button
           title={strings.viewAllRents}

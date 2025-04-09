@@ -20,8 +20,8 @@ export default class KVAsyncStorage {
    * method to clear user and token
    */
   async clearUserAndToken() {
-    //await AsyncStorage.removeItem(ASYNCSTORAGE_KEYS.KEY_USER);
-    //await AsyncStorage.removeItem(ASYNCSTORAGE_KEYS.KEY_TOKEN);
+    await AsyncStorage.removeItem(ASYNCSTORAGE_KEYS.KEY_USER);
+    await AsyncStorage.removeItem(ASYNCSTORAGE_KEYS.KEY_TOKEN);
     return true;
   }
 
@@ -29,7 +29,7 @@ export default class KVAsyncStorage {
    * method to return user details
    */
   async getUserDetails() {
-    //return await AsyncStorage.getItem(ASYNCSTORAGE_KEYS.KEY_USER);
+    return await AsyncStorage.getItem(ASYNCSTORAGE_KEYS.KEY_USER);
   }
 
   /*
@@ -40,11 +40,11 @@ export default class KVAsyncStorage {
   }
 
   async getItems(key) {
-    //return await AsyncStorage.getItem(key);
+    return await AsyncStorage.getItem(key);
   }
 
   async setItems(key, jsonData) {
-    //await AsyncStorage.setItem(key, JSON.stringify(jsonData) || '');
+    await AsyncStorage.setItem(key, JSON.stringify(jsonData) || '');
     return true;
   }
 
@@ -52,12 +52,12 @@ export default class KVAsyncStorage {
    * method to clear key
    */
   async clearItems(key) {
-    //await AsyncStorage.removeItem(key);
+    await AsyncStorage.removeItem(key);
     return true;
   }
 
   async clearAll() {
-    //await AsyncStorage.clear();
+    await AsyncStorage.clear();
   }
 
   /*
@@ -76,7 +76,7 @@ export default class KVAsyncStorage {
       items.push(jsonData);
     }
     items.sort((a, b) => (a._id < b._id ? -1 : 1));
-    //await AsyncStorage.setItem(key, JSON.stringify(items) || '');
+    await AsyncStorage.setItem(key, JSON.stringify(items) || '');
     return items;
   }
 }

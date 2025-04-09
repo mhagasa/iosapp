@@ -187,14 +187,14 @@ export default function AddRentDetailScreen(props) {
         <View>
           {showTenantSelection ? (
             <View>
-              {/* Close Button (cross) */}
-              <TouchableOpacity onPress={() => {
-                setShowTenantSelection(false);
-              }} style={styles.closeButton}>
-                <Icon name="close" size={40} color="white" />
-              </TouchableOpacity>
 
               <View style={styles.modalSelection}>
+                  {/* Close Button (cross) */}
+                <TouchableOpacity onPress={() => {
+                  setShowTenantSelection(false);
+                }} style={styles.closeButton}>
+                  <Icon name="close" size={40} color="black" />
+                </TouchableOpacity>
                 <Text style={styles.header}>{strings.selectTenant}</Text>
                 <View style={styles.lineStyle} />
                   <SearchBar
@@ -407,7 +407,7 @@ const styles = StyleSheet.create({
     margin: '2%'
   },
   container: {
-      marginTop: Platform.OS === 'ios' ? "25%" : "2%",
+    marginTop: Platform.OS === 'ios' ? "25%" : "2%",
     borderRadius: 5,
     borderColor: 'white',
     paddingTop:"2%",
@@ -427,6 +427,7 @@ const styles = StyleSheet.create({
     height: '100%',
     minHeight: DIMENSIONS.HEIGHT / 2.1,
     maxHeight: DIMENSIONS.HEIGHT / 1.3,
+    marginTop: Platform.OS === 'ios' ? "25%" : "2%",
   },
   header: {
     fontSize: FONT_CONSTANTS.FONT_SIZE_MEDIUM,

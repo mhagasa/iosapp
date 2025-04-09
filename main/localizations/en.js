@@ -28,7 +28,7 @@ export default {
   deletedSuccessfully: 'Deleted Successfully',
   editProfile: 'Edit Profile',
   electricityCharge: 'Electricity Charge',
-  electricityPerUnit: 'Electricity Charge Per Unit',
+  electricityPerUnit: 'Charge Per Unit',
   electricityUnit: 'Electricity Unit',
   endDate: 'End Date',
   english: 'English',

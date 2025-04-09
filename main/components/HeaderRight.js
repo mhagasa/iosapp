@@ -14,7 +14,7 @@ export default HeaderRight = () => {
   return (
     <View style={styles.container}>
       
-      {/* <TouchableOpacity style={styles.notification}>
+      <TouchableOpacity style={styles.notification}>
         <Pressable
           onPress={() => {
             navigation.navigate(SCREEN_NAME.NOTIFICATION);
@@ -29,7 +29,7 @@ export default HeaderRight = () => {
           }}>
           <Ionicons name="person-circle-outline" size={iconSize} />
         </Pressable>
-      </TouchableOpacity> */}
+      </TouchableOpacity>
     </View>
   );
 };

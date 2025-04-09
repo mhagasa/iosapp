@@ -23,6 +23,7 @@ import { HEADER_COLOR } from './main/constants/theme-constants';
 
 import RegisterScreen from './main/screens/RegisterScreen';
 import LoginScreen from './main/screens/LoginScreen';
+import ProfileScreen from './main/screens/ProfileScreen';
 import ForgotPasswordScreen from './main/screens/ForgotPasswordScreen';
 import SplashScreen from './main/screens/SplashScreen';
 import SendRegisterOtpScreen from './main/screens/SendRegisterOtpScreen';
@@ -127,6 +128,14 @@ function App(): React.JSX.Element {
                   headerShown: false,
                   headerRight: () => <HeaderRight />
                 }} 
+                />
+
+                <Stack.Screen 
+                name={SCREEN_NAME.PROFILE}
+                component={ProfileScreen}
+                options={{
+                  title: strings.profile,
+                }}
                 />
               </Stack.Navigator>
             </NavigationContainer>
